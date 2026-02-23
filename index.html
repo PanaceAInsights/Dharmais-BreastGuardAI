@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BreastGuard AI - Data Requirements for RS Dharmais Collaboration</title>
+<style>
+  :root { --red: #DC143C; --dark: #1a1a2e; --mid: #2C3E50; --light-bg: #f8f9fa; --green: #27ae60; --amber: #f39c12; --blue: #2980b9; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #333; line-height: 1.6; background: #fff; }
+  .header { background: linear-gradient(135deg, var(--dark), var(--mid)); color: white; padding: 32px 0; }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 0 30px; }
+  .header h1 { font-size: 26px; font-weight: 300; margin-bottom: 6px; }
+  .header h1 span { color: var(--red); font-weight: 600; }
+  .header .subtitle { font-size: 15px; opacity: 0.85; }
+  .header .meta { margin-top: 14px; font-size: 13px; opacity: 0.7; display: flex; gap: 20px; flex-wrap: wrap; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 30px 40px; }
+  .tab-nav { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-top: 24px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-btn { padding: 12px 20px; font-size: 14px; font-weight: 500; border: none; background: none; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.2s; }
+  .tab-btn:hover { color: var(--mid); background: #f8f8f8; }
+  .tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 600; }
+  .tab-content { display: none; padding-top: 24px; animation: fadeIn 0.3s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h2 { font-size: 20px; color: var(--dark); margin: 0 0 15px; padding-bottom: 8px; border-bottom: 2px solid var(--red); }
+  h3 { font-size: 16px; color: var(--mid); margin: 22px 0 10px; }
+  p { margin-bottom: 12px; font-size: 15px; }
+  .intro-box { background: var(--light-bg); border-radius: 10px; padding: 20px 24px; margin-bottom: 25px; }
+  .intro-box p { margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0 25px; font-size: 14px; }
+  th { background: var(--dark); color: white; padding: 10px 14px; text-align: left; font-weight: 500; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .tag-core { background: #e8f0fe; color: #1a73e8; }
+  .tag-helpful { background: #fef3e2; color: #e67e22; }
+  .tag-bonus { background: #f0f0f0; color: #777; }
+  .tag-confirmed { background: #e8f8e8; color: #27ae60; }
+  .tag-pending { background: #fff3cd; color: #856404; }
+  .tag-partial { background: #e8f0fe; color: #5b7fcc; }
+  .section-card { background: white; border: 1px solid #e8e8e8; border-radius: 10px; padding: 20px 24px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .section-card h3 { margin-top: 0; color: var(--red); }
+  .note { background: #fff8e1; border-left: 4px solid var(--amber); padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .note strong { color: var(--amber); }
+  .info-callout { background: #e8f4fd; border-left: 4px solid var(--blue); padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .info-callout strong { color: var(--blue); }
+  .success { background: #e8f8e8; border-left: 4px solid var(--green); padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .success strong { color: var(--green); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  .col-card { background: var(--light-bg); border-radius: 8px; padding: 16px 20px; }
+  .col-card h4 { font-size: 14px; color: var(--mid); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .col-card ul { padding-left: 18px; font-size: 14px; }
+  .col-card li { margin-bottom: 4px; }
+  .format-spec { font-family: 'Consolas', 'Courier New', monospace; background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  .footer { background: var(--light-bg); padding: 25px 30px; margin-top: 40px; text-align: center; font-size: 13px; color: #888; border-top: 1px solid #e0e0e0; }
+  .footer a { color: var(--red); text-decoration: none; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0 20px; font-size: 13px; align-items: center; }
+  .legend-label { color: #666; font-weight: 500; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1><span>BreastGuard AI</span> | Data Requirements Specification</h1>
+    <div class="subtitle">RS Dharmais National Cancer Center Collaboration</div>
+    <div class="meta">
+      <span>Version 1.0</span>
+      <span>Prepared by: Dr Yagiz Alp Aksoy MD PhD, PanaceAI</span>
+      <span>Date: 23 February 2026</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab(this,'overview')">Overview</button>
+    <button class="tab-btn" onclick="showTab(this,'demographics')">Demographics</button>
+    <button class="tab-btn" onclick="showTab(this,'pathology')">Tumour &amp; Pathology</button>
+    <button class="tab-btn" onclick="showTab(this,'ihc')">IHC &amp; Markers</button>
+    <button class="tab-btn" onclick="showTab(this,'treatment')">Treatment</button>
+    <button class="tab-btn" onclick="showTab(this,'outcomes')">Outcomes</button>
+    <button class="tab-btn" onclick="showTab(this,'indonesia')">Indonesia-Specific</button>
+    <button class="tab-btn" onclick="showTab(this,'digital')">Digital Pathology</button>
+    <button class="tab-btn" onclick="showTab(this,'delivery')">Data Delivery</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="tab-content active">
+    <h2>Overview</h2>
+    <div class="intro-box">
+      <p><strong>Purpose:</strong> This document describes the data fields we would like to use to develop, train, and validate BreastGuard AI: a machine learning model that predicts breast cancer risk stratification, survival, and recurrence tailored to the Indonesian population.</p>
+      <p><strong>Approach:</strong> We use ensemble machine learning (XGBoost, Random Forest, SVM) with SHAP explainability. This is the same methodology used in our published and peer-reviewed tools for colorectal polyps (<em>ANZ J Surgery, 2025</em>), medullary thyroid carcinoma (<em>Histopathology, 2024</em>), and mesothelioma (<em>Pathology, 2023</em>).</p>
+      <p><strong>Deliverable:</strong> A de-identified, tabular dataset (Excel/CSV), one row per patient, with the fields described in this document.</p>
+    </div>
+    <div class="success">
+      <strong>Where we are:</strong> Based on our previous Q&amp;A, we understand there are approximately <strong>2,125 breast cancer cases (2022)</strong> available with clinical data, pathology reports, IHC markers, and digitised slides (Philips SG300, 40x). This is an excellent foundation to work from.
+    </div>
+    <div class="info-callout">
+      <strong>Flexibility note:</strong> The tables in each tab describe our ideal dataset. We understand that not every variable may be available or easy to extract, and that is perfectly fine. We are happy to work with whatever data can be provided. Even a subset of these variables across the cohort will allow us to build a meaningful model. The "Usefulness" column simply indicates which variables tend to have the strongest predictive value based on our experience with similar models.
+    </div>
+    <h3>How to read the variable tables</h3>
+    <div class="legend">
+      <span class="legend-label">Usefulness:</span>
+      <span class="tag tag-core">Core variable</span> Typically strong predictors in breast cancer AI models
+      <span class="tag tag-helpful">Helpful</span> Adds value if available
+      <span class="tag tag-bonus">Bonus</span> Nice to have, no pressure at all
+    </div>
+    <div class="legend">
+      <span class="legend-label">Availability:</span>
+      <span class="tag tag-confirmed">Confirmed</span> Confirmed as available in our previous Q&amp;A
+      <span class="tag tag-partial">Partial</span> Available for some patients
+      <span class="tag tag-pending">To discuss</span> Not yet confirmed
+    </div>
+    <h3>Pilot Model: 13 Core Variables</h3>
+    <p>If full data extraction takes time, we can absolutely start with a smaller set. The table below shows the minimum that would let us begin building the model immediately:</p>
+    <div class="section-card">
+      <table>
+        <tr><th>#</th><th>Variable</th><th>Category</th></tr>
+        <tr><td>1</td><td>Patient ID (de-identified)</td><td>Demographics</td></tr>
+        <tr><td>2</td><td>Age at diagnosis</td><td>Demographics</td></tr>
+        <tr><td>3</td><td>Clinical stage (I-IV)</td><td>Pathology</td></tr>
+        <tr><td>4</td><td>Histological grade (1-3)</td><td>Pathology</td></tr>
+        <tr><td>5</td><td>Tumour size (mm)</td><td>Pathology</td></tr>
+        <tr><td>6</td><td>Positive lymph nodes (count)</td><td>Pathology</td></tr>
+        <tr><td>7</td><td>ER status</td><td>IHC</td></tr>
+        <tr><td>8</td><td>PR status</td><td>IHC</td></tr>
+        <tr><td>9</td><td>HER2 status</td><td>IHC</td></tr>
+        <tr><td>10</td><td>Ki-67 (%)</td><td>IHC</td></tr>
+        <tr><td>11</td><td>Treatment (surgery, chemo, radio, hormonal)</td><td>Treatment</td></tr>
+        <tr><td>12</td><td>Vital status (alive/dead) + follow-up months</td><td>Outcome</td></tr>
+        <tr><td>13</td><td>Recurrence (yes/no) + time to recurrence (months)</td><td>Outcome</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:14px;color:#666;">With approximately 2,125 cases and these 13 variables, we can build and publish a robust, peer-reviewed prognostic model within 3-4 months of data receipt.</p>
+    </div>
+  </div>
+
+  <!-- DEMOGRAPHICS -->
+  <div id="demographics" class="tab-content">
+    <h2>1. Patient Demographics</h2>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th style="width:14%">Availability</th><th>Notes</th></tr>
+      <tr><td>Patient ID</td><td><span class="format-spec">DHR000001</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">To discuss</span></td><td>De-identified unique ID (no names, no MRN)</td></tr>
+      <tr><td>Age at diagnosis</td><td><span class="format-spec">Integer (years)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Sex</td><td><span class="format-spec">M / F</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Province / region</td><td><span class="format-spec">Text</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>For geographic disparity analysis</td></tr>
+      <tr><td>Insurance type</td><td><span class="format-spec">BPJS PBI / Non-PBI / Private / None</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-pending">To discuss</span></td><td>For health equity modelling</td></tr>
+      <tr><td>BMI / height / weight</td><td><span class="format-spec">Numeric</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-pending">To discuss</span></td><td>If available in clinical notes</td></tr>
+    </table>
+    <div class="info-callout">
+      <strong>De-identification:</strong> All data must be fully de-identified before transfer. No patient names, medical record numbers, dates of birth, or contact details. Age at diagnosis (integer) is acceptable. All dates should be converted to intervals (e.g., months from diagnosis to outcome).
+    </div>
+  </div>
+
+  <!-- PATHOLOGY -->
+  <div id="pathology" class="tab-content">
+    <h2>2. Tumour &amp; Pathology Data</h2>
+    <p>These are the variables that typically drive the strongest predictive accuracy in breast cancer models.</p>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th style="width:14%">Availability</th><th>Notes</th></tr>
+      <tr><td>Histological subtype</td><td><span class="format-spec">Text (WHO classification)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>e.g., Invasive ductal, lobular, mucinous</td></tr>
+      <tr><td>Tumour size (max diameter)</td><td><span class="format-spec">mm (numeric)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>Largest dimension from pathology report</td></tr>
+      <tr><td>Histological grade</td><td><span class="format-spec">1 / 2 / 3</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>Nottingham grading system preferred</td></tr>
+      <tr><td>Clinical stage at diagnosis</td><td><span class="format-spec">I / II / III / IV</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>AJCC/TNM staging</td></tr>
+      <tr><td>T stage</td><td><span class="format-spec">T1 / T2 / T3 / T4</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>Component of TNM staging</td></tr>
+      <tr><td>N stage (nodal)</td><td><span class="format-spec">N0 / N1 / N2 / N3</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>M stage (metastasis)</td><td><span class="format-spec">M0 / M1</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Number of lymph nodes examined</td><td><span class="format-spec">Integer</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">To discuss</span></td><td>Total nodes harvested at surgery</td></tr>
+      <tr><td>Number of positive lymph nodes</td><td><span class="format-spec">Integer</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>Lymphovascular invasion (LVI)</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Perineural invasion (PNI)</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>Surgical margins</td><td><span class="format-spec">Positive / Negative / Close</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Margin distance (mm)</td><td><span class="format-spec">Numeric (mm)</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>If available</td></tr>
+      <tr><td>Necrosis</td><td><span class="format-spec">Present / Absent</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>Multifocality</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+    </table>
+  </div>
+
+  <!-- IHC -->
+  <div id="ihc" class="tab-content">
+    <h2>3. Immunohistochemistry (IHC) &amp; Molecular Markers</h2>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th style="width:14%">Availability</th><th>Notes</th></tr>
+      <tr><td>ER (Estrogen Receptor)</td><td><span class="format-spec">Positive / Negative (+ % if available)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>Allred score or % positivity</td></tr>
+      <tr><td>PR (Progesterone Receptor)</td><td><span class="format-spec">Positive / Negative (+ % if available)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>HER2 status</td><td><span class="format-spec">0 / 1+ / 2+ / 3+</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>FISH confirmation for 2+ cases if available</td></tr>
+      <tr><td>Ki-67 index</td><td><span class="format-spec">% (numeric)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>Used for molecular subtyping</td></tr>
+      <tr><td>Molecular subtype</td><td><span class="format-spec">Luminal A / Luminal B / HER2+ / Triple-negative</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">Derivable</span></td><td>Can be derived from ER/PR/HER2/Ki67 if not explicitly recorded</td></tr>
+      <tr><td>PD-L1</td><td><span class="format-spec">Positive / Negative (+ CPS if available)</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-partial">Partial</span></td><td>Available for some patients</td></tr>
+      <tr><td>MMR status</td><td><span class="format-spec">Proficient / Deficient</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-partial">Partial</span></td><td>Available for some patients</td></tr>
+      <tr><td>p53</td><td><span class="format-spec">Wild-type / Mutant</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>FISH/HER2 amplification</td><td><span class="format-spec">Amplified / Not amplified</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>For HER2 2+ equivocal cases</td></tr>
+    </table>
+    <div class="success">
+      <strong>Note:</strong> Based on our previous Q&amp;A, the four key IHC markers (ER, PR, HER2, Ki-67) appear to be routinely performed. This means molecular subtypes can be derived for the full cohort, which is a strong starting point.
+    </div>
+  </div>
+
+  <!-- TREATMENT -->
+  <div id="treatment" class="tab-content">
+    <h2>4. Treatment Data</h2>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th style="width:14%">Availability</th><th>Notes</th></tr>
+      <tr><td>Surgery type</td><td><span class="format-spec">Mastectomy / BCS / None</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>BCS = Breast Conserving Surgery</td></tr>
+      <tr><td>Axillary procedure</td><td><span class="format-spec">SLNB / ALND / None</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>Neoadjuvant chemotherapy</td><td><span class="format-spec">Yes / No (+ regimen if available)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Adjuvant chemotherapy</td><td><span class="format-spec">Yes / No (+ regimen if available)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Radiotherapy</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Endocrine / hormone therapy</td><td><span class="format-spec">Yes / No (+ drug if available)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td>e.g., Tamoxifen, Letrozole</td></tr>
+      <tr><td>Targeted therapy (anti-HER2)</td><td><span class="format-spec">Yes / No (+ drug if available)</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>e.g., Trastuzumab</td></tr>
+      <tr><td>Pathological response to neoadjuvant</td><td><span class="format-spec">pCR / partial / no response</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>If neoadjuvant was given</td></tr>
+    </table>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div id="outcomes" class="tab-content">
+    <h2>5. Outcome Data (The Target Variables)</h2>
+    <div class="info-callout">
+      <strong>Why outcomes matter most:</strong> Outcome data is what allows the AI model to learn patterns between patient characteristics and what happens to them. Without survival status and follow-up duration, we can still build a descriptive tool, but a predictive model needs outcomes to train on. Even partial outcome data (e.g., survival status known for 70% of patients) is very workable.
+    </div>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th style="width:14%">Availability</th><th>Notes</th></tr>
+      <tr><td>Vital status at last follow-up</td><td><span class="format-spec">Alive / Dead</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Follow-up duration</td><td><span class="format-spec">Months (numeric)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">To confirm format</span></td><td>Time from diagnosis to last contact or death</td></tr>
+      <tr><td>Cause of death</td><td><span class="format-spec">Cancer / Other / Unknown</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td>For cancer-specific survival analysis</td></tr>
+      <tr><td>Recurrence (local or distant)</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-confirmed">Confirmed</span></td><td></td></tr>
+      <tr><td>Time to recurrence</td><td><span class="format-spec">Months (numeric)</span></td><td><span class="tag tag-core">Core</span></td><td><span class="tag tag-pending">To confirm format</span></td><td>Time from diagnosis to first recurrence</td></tr>
+      <tr><td>Recurrence site</td><td><span class="format-spec">Local / Regional / Distant / Multiple</span></td><td><span class="tag tag-helpful">Helpful</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+      <tr><td>Distant metastasis site</td><td><span class="format-spec">Bone / Lung / Liver / Brain / Other</span></td><td><span class="tag tag-bonus">Bonus</span></td><td><span class="tag tag-pending">To discuss</span></td><td></td></tr>
+    </table>
+  </div>
+
+  <!-- INDONESIA SPECIFIC -->
+  <div id="indonesia" class="tab-content">
+    <h2>6. Indonesia-Specific Contextual Variables</h2>
+    <p>These variables would make BreastGuard AI uniquely relevant to the Indonesian population and are not typically available in Western datasets. None of these are necessary for the model to work, but any that happen to be recorded in clinical notes would be a wonderful addition.</p>
+    <table>
+      <tr><th style="width:28%">Variable</th><th style="width:22%">Format</th><th style="width:14%">Usefulness</th><th>Notes</th></tr>
+      <tr><td>Time from first symptoms to diagnosis</td><td><span class="format-spec">Months (numeric)</span></td><td><span class="tag tag-helpful">Helpful</span></td><td>Known to be longer in Indonesia due to access barriers</td></tr>
+      <tr><td>Traditional medicine (Jamu) use</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-bonus">Bonus</span></td><td>If recorded in clinical notes</td></tr>
+      <tr><td>Traditional healer visited before hospital</td><td><span class="format-spec">Yes / No</span></td><td><span class="tag tag-bonus">Bonus</span></td><td>Affects delay to diagnosis</td></tr>
+      <tr><td>BPJS class</td><td><span class="format-spec">Kelas I / II / III</span></td><td><span class="tag tag-bonus">Bonus</span></td><td>For health equity analysis</td></tr>
+      <tr><td>Distance to treating centre</td><td><span class="format-spec">km (numeric)</span></td><td><span class="tag tag-bonus">Bonus</span></td><td></td></tr>
+      <tr><td>Referral pathway</td><td><span class="format-spec">Self / Puskesmas / Hospital / Other</span></td><td><span class="tag tag-bonus">Bonus</span></td><td></td></tr>
+    </table>
+  </div>
+
+  <!-- DIGITAL PATHOLOGY -->
+  <div id="digital" class="tab-content">
+    <h2>7. Digital Pathology (Phase 2)</h2>
+    <div class="section-card">
+      <h3>Confirmed Infrastructure</h3>
+      <div class="two-col">
+        <div class="col-card">
+          <h4>Scanner Details</h4>
+          <ul>
+            <li>Scanner: Philips SG300</li>
+            <li>Resolution: 40x equivalent</li>
+            <li>Scan time: ~62 sec/slide (total)</li>
+            <li>Throughput: ~30 slides/hour</li>
+            <li>Avg file size: ~1.3 GB per slide</li>
+          </ul>
+        </div>
+        <div class="col-card">
+          <h4>Annotation &amp; Scoring</h4>
+          <ul>
+            <li>Annotations: Available via IMS viewer</li>
+            <li>Pathologist scoring: Yes (WHO criteria)</li>
+            <li>Tumour regions: Can be marked</li>
+            <li>Unstained slides: Available if IHC needed in Australia</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Note:</strong> Digital pathology integration is a Phase 2 enhancement. For the initial model, we only need the tabular clinical + pathology data described in the other tabs. Slide images can be incorporated later for deep learning-based tumour grading and feature extraction.
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA DELIVERY -->
+  <div id="delivery" class="tab-content">
+    <h2>8. Data Delivery Specification</h2>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>Format</h4>
+        <ul>
+          <li>Excel (.xlsx) or CSV (.csv)</li>
+          <li>One row per patient</li>
+          <li>One column per variable</li>
+          <li>English column headers preferred</li>
+          <li>Consistent coding (no mixed formats)</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>Governance &amp; Security</h4>
+        <ul>
+          <li>Fully de-identified before transfer</li>
+          <li>Encrypted transfer (secure link or encrypted email)</li>
+          <li>Ethics approval / data sharing agreement in place</li>
+          <li>Compliant with Indonesian PDPA and Australian Privacy Act</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Outstanding Questions</h3>
+    <div class="section-card">
+      <table>
+        <tr><th>#</th><th>Question</th><th>Context</th></tr>
+        <tr><td>1</td><td>Is the breast cancer dataset <strong>pre-treatment, post-treatment, or mixed</strong>?</td><td>This was asked previously but not answered; it helps us design the model correctly</td></tr>
+        <tr><td>2</td><td>What is the <strong>median follow-up duration</strong> for the breast cohort?</td><td>Ideally 2+ years for meaningful survival analysis</td></tr>
+        <tr><td>3</td><td>Can outcome data (<strong>survival status + recurrence</strong>) be extracted from the hospital database?</td><td>Even partial outcome data is very workable</td></tr>
+        <tr><td>4</td><td>Is <strong>number of lymph nodes examined vs. positive</strong> routinely recorded?</td><td>Nodal ratio is a useful prognostic factor</td></tr>
+        <tr><td>5</td><td>Would it be feasible to start with a <strong>pilot data extract of 100-200 cases</strong>?</td><td>This would let us begin building immediately while full extraction continues</td></tr>
+        <tr><td>6</td><td>Would a <strong>pre-formatted Excel template</strong> with column headers and coding instructions (English + Bahasa) be useful for the extraction?</td><td>Happy to provide this if it helps</td></tr>
+        <tr><td>7</td><td>What <strong>ethics / IRB approvals</strong> are needed for de-identified data sharing under the collaboration MoU?</td><td>We can prepare the Australian-side ethics application in parallel</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>PanaceAI Pty Ltd</strong> | Precision Engineering for Decisions That Matter</p>
+  <p>Dr Yagiz Alp Aksoy MD PhD &nbsp;|&nbsp; <a href="mailto:yagiz.aksoy@panaceai.com.au">yagiz.aksoy@panaceai.com.au</a> &nbsp;|&nbsp; <a href="https://www.panacea-i.com">www.panacea-i.com</a> &nbsp;|&nbsp; <a href="https://www.panaceai.com.au">panaceai.com.au</a></p>
+  <p style="margin-top:8px;">This document is confidential and intended for the RS Dharmais collaboration team.</p>
+</div>
+
+<script>
+function showTab(btn, tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
